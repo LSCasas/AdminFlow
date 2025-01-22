@@ -14,7 +14,7 @@ const InventoryStatus = () => {
     datasets: [
       {
         label: "Estado del Inventario",
-        data: [30, 50, 20], // Modifica estos valores según tus datos
+        data: [30, 50, 20],
         backgroundColor: ["#FF6384", "#36A2EB", "#FFCE56"],
         hoverBackgroundColor: ["#FF4382", "#2D8CFF", "#FFB83D"],
       },

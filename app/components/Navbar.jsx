@@ -14,10 +14,6 @@ export default function Navbar() {
           <button className="hover:text-gray-300">Historial</button>
           <button className="hover:text-gray-300">Inventario</button>
         </div>
-        <div className="mt-4 sm:mt-0 sm:hidden">
-          {" "}
-          <button className="hover:text-gray-300">Reportes</button>
-        </div>
       </div>
     </div>
   );
