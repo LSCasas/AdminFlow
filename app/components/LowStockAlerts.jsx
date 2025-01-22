@@ -1,4 +1,3 @@
-// components/LowStockAlerts.js
 import React from "react";
 
 export default function LowStockAlerts({ items }) {

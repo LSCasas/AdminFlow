@@ -2,7 +2,7 @@ import React, { useState, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
-import SignatureCanvas from "react-signature-canvas"; // Importing the SignatureCanvas component
+import SignatureCanvas from "react-signature-canvas";
 
 export default function ConsumibleForm() {
   const {
@@ -11,20 +11,19 @@ export default function ConsumibleForm() {
     formState: { errors },
   } = useForm();
 
-  const [firma, setFirma] = useState(""); // State to hold the signature data
-  const sigCanvas = useRef(null); // Ref to the signature canvas
+  const [firma, setFirma] = useState("");
+  const sigCanvas = useRef(null);
 
   const onSubmit = (data) => {
     console.log("Form data", data);
-    // Include the firma (signature) data
+
     const formData = {
       ...data,
-      firma: firma, // Adding the signature data to the form submission
+      firma: firma,
     };
 
     console.log("Form data with signature", formData);
 
-    // Show success message
     toast.success("Registro exitoso", {
       position: window.innerWidth < 640 ? "top-center" : "bottom-left",
       style: {
@@ -37,8 +36,8 @@ export default function ConsumibleForm() {
   };
 
   const handleClearSignature = () => {
-    sigCanvas.current.clear(); // Clears the signature canvas
-    setFirma(""); // Resets the firma state
+    sigCanvas.current.clear();
+    setFirma("");
   };
 
   return (

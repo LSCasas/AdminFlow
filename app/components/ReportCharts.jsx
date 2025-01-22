@@ -1,4 +1,3 @@
-// components/ReportCharts.js
 import React, { useEffect } from "react";
 import { Bar, Pie } from "react-chartjs-2";
 import {
@@ -12,7 +11,6 @@ import {
   ArcElement,
 } from "chart.js";
 
-// Registrar los elementos necesarios de Chart.js
 ChartJS.register(
   CategoryScale,
   LinearScale,

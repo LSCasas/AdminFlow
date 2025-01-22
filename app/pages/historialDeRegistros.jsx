@@ -1,4 +1,3 @@
-// pages/historialDeRegistros.js
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Filters from "../components/Filters";

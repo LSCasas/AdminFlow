@@ -1,10 +1,8 @@
-// components/ExportButtons.js
 import React from "react";
 
 export default function ExportButtons() {
   const handleExport = (type) => {
     console.log(`Exportando a ${type}`);
-    // Aquí puedes agregar la lógica de exportación para PDF o Excel.
   };
 
   return (
