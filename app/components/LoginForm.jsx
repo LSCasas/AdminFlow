@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
+import { useRouter } from "next/router";
+import { login } from "../api/api";
 
 export default function LoginForm() {
   const {
@@ -10,19 +12,41 @@ export default function LoginForm() {
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
+  const router = useRouter();
 
-  const onSubmit = (data) => {
-    console.log("Form data", data);
-    // Mostrar el mensaje de bienvenida al iniciar sesión
-    toast.success("Bienvenido", {
-      position: window.innerWidth < 640 ? "top-center" : "bottom-left",
-      style: {
-        fontSize: "20px",
-        padding: "20px",
-        maxWidth: "90vw",
-        width: "auto",
-      },
-    });
+  const onSubmit = async (data) => {
+    try {
+      const response = await login(data.email, data.password);
+      const token = response.token;
+      localStorage.setItem("token", token);
+      toast.success("Bienvenido", {
+        position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+        style: {
+          fontSize: "20px",
+          padding: "20px",
+          maxWidth: "90vw",
+          width: "auto",
+        },
+      });
+
+      router.push("/dashboard");
+    } catch (error) {
+      console.error("Login failed:", error.message);
+
+      toast.error(
+        error.message ||
+          "Hubo un problema con el inicio de sesión. Intenta nuevamente.",
+        {
+          position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+          style: {
+            fontSize: "20px",
+            padding: "20px",
+            maxWidth: "90vw",
+            width: "auto",
+          },
+        }
+      );
+    }
   };
 
   const handleShowHidePassword = () => {

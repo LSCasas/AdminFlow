@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
 import SignatureCanvas from "react-signature-canvas";
+import { createRecord } from "../api/api";
 
 export default function ConsumibleForm() {
   const {
@@ -14,35 +15,73 @@ export default function ConsumibleForm() {
   const [firma, setFirma] = useState("");
   const sigCanvas = useRef(null);
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
     console.log("Form data", data);
 
-    const formData = {
-      ...data,
-      firma: firma,
-    };
+    const token = localStorage.getItem("token");
+    if (token) {
+      const formData = {
+        ...data,
+        firma: firma,
+      };
 
-    console.log("Form data with signature", formData);
+      try {
+        const response = await createRecord(formData, ` ${token}`);
 
-    toast.success("Registro exitoso", {
-      position: window.innerWidth < 640 ? "top-center" : "bottom-left",
-      style: {
-        fontSize: "20px",
-        padding: "20px",
-        maxWidth: "90vw",
-        width: "auto",
-      },
-    });
+        if (response.success) {
+          toast.success("Registro exitoso", {
+            position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+            style: {
+              fontSize: "20px",
+              padding: "20px",
+              maxWidth: "90vw",
+              width: "auto",
+            },
+          });
+        } else {
+          toast.error("Error al registrar el consumible", {
+            position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+            style: {
+              fontSize: "20px",
+              padding: "20px",
+              maxWidth: "90vw",
+              width: "auto",
+            },
+          });
+        }
+      } catch (error) {
+        console.error("Error al registrar el consumible:", error);
+        toast.error("Hubo un error al registrar el consumible", {
+          position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+          style: {
+            fontSize: "20px",
+            padding: "20px",
+            maxWidth: "90vw",
+            width: "auto",
+          },
+        });
+      }
+    } else {
+      console.error("Token no encontrado");
+      toast.error("Token no encontrado en el localStorage", {
+        position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+        style: {
+          fontSize: "20px",
+          padding: "20px",
+          maxWidth: "90vw",
+          width: "auto",
+        },
+      });
+    }
   };
 
   const handleClearSignature = () => {
     sigCanvas.current.clear();
     setFirma("");
   };
-
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8  w-full">
-      <Toaster /> {/* Toast messages */}
+    <div className="bg-white rounded-lg shadow-lg p-8 w-full">
+      <Toaster />
       <h2 className="mb-4 text-center text-2xl font-bold text-[#B0005E]">
         Registro de Consumibles
       </h2>
@@ -155,11 +194,13 @@ export default function ConsumibleForm() {
             type="date"
             id="fecha"
             name="fecha"
+            defaultValue={new Date().toISOString().split("T")[0]} // Fecha de hoy en formato YYYY-MM-DD
             className={clsx(
               "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
               { "border-red-500": errors.fecha }
             )}
             {...register("fecha", { required: "Fecha es requerida" })}
+            readOnly // Hace que el campo sea no editable
           />
           {errors.fecha && (
             <p className="text-red-500 text-sm mt-1">{errors.fecha.message}</p>
@@ -182,7 +223,6 @@ export default function ConsumibleForm() {
               setFirma(sigCanvas.current.getTrimmedCanvas().toDataURL())
             }
           />
-          {/* Clear button for the signature */}
           <button
             type="button"
             onClick={handleClearSignature}

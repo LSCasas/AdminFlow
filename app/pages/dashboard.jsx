@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "@/components/Navbar";
 import ActivitySummary from "@/components/ActivitySummary";
 import InventoryStatus from "@/components/InventoryStatus";
-import QuickAccessPanel from "@/components/QuickAccessPanel";
 import Analytics from "@/components/Analytics";
 
 const Dashboard = () => {
@@ -15,7 +14,6 @@ const Dashboard = () => {
           <InventoryStatus />
           <Analytics />
         </div>
-        <QuickAccessPanel />
       </div>
     </div>
   );
