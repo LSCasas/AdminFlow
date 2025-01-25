@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
-import Filters from "../components/Filters";
 import Table from "../components/Table";
 import ExportButtons from "../components/ExportButtons";
 
@@ -34,7 +33,6 @@ export default function HistorialDeRegistros() {
         <h1 className="text-2xl font-bold text-center mb-6 text-[#6C0036]">
           Historial de Registros
         </h1>
-        <Filters />
         <Table data={data} />
         <ExportButtons />
       </div>

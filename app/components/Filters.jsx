@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function Filters() {
+export default function Filters({ onFilterChange }) {
   const [filters, setFilters] = useState({
     name: "",
     area: "",
@@ -11,6 +11,7 @@ export default function Filters() {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFilters({ ...filters, [name]: value });
+    onFilterChange({ ...filters, [name]: value });
   };
 
   return (
