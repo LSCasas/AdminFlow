@@ -4,6 +4,7 @@ import { toast, Toaster } from "sonner";
 import clsx from "clsx";
 import SignatureCanvas from "react-signature-canvas";
 import { createRecord } from "../api/api";
+import { useRouter } from "next/router";
 
 export default function ConsumibleForm() {
   const {
@@ -14,6 +15,7 @@ export default function ConsumibleForm() {
 
   const [firma, setFirma] = useState("");
   const sigCanvas = useRef(null);
+  const router = useRouter();
 
   const onSubmit = async (data) => {
     console.log("Form data", data);
@@ -38,6 +40,8 @@ export default function ConsumibleForm() {
               width: "auto",
             },
           });
+
+          router.push("/historialDeRegistros");
         } else {
           toast.error("Error al registrar el consumible", {
             position: window.innerWidth < 640 ? "top-center" : "bottom-left",

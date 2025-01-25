@@ -77,11 +77,11 @@ export async function getRecords(filter = {}) {
     const token = localStorage.getItem("token");
     const queryParams = new URLSearchParams(filter).toString();
 
-    const res = await fetch(`${API_URL}/records?${queryParams}`, {
+    const res = await fetch(`${API_URL}/record${queryParams}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: ` ${token}`,
       },
     });
 
@@ -100,11 +100,11 @@ export async function getRecordById(id) {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_URL}/records/${id}`, {
+    const res = await fetch(`${API_URL}/record/${id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: ` ${token}`,
       },
     });
 
