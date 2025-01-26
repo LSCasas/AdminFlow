@@ -195,3 +195,28 @@ export async function updateConsumable(id, updates) {
     throw error;
   }
 }
+
+// DELETE Consumable
+export async function deleteConsumable(id) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_URL}/consumables/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ` ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Error al eliminar el consumible");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error en deleteConsumable:", error.message);
+    throw error;
+  }
+}
