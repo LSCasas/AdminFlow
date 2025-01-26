@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import Navbar from "../components/Navbar";
 import Table from "../components/Table";
-import ExportButtons from "../components/ExportButtons";
 
 export default function HistorialDeRegistros() {
-  // Simulamos algunos datos de ejemplo
   const [data, setData] = useState([
     {
       name: "Registro 1",
@@ -34,7 +32,6 @@ export default function HistorialDeRegistros() {
           Historial de Registros
         </h1>
         <Table data={data} />
-        <ExportButtons />
       </div>
     </div>
   );

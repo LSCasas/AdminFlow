@@ -1,14 +1,39 @@
 import React, { useState } from "react";
+import { createConsumable } from "../api/api"; // Asegúrate de que la ruta sea correcta
 
 export default function AddItemForm({ onAddItem }) {
   const [name, setName] = useState("");
-  const [quantity, setQuantity] = useState(0);
+  const [stock, setStock] = useState(0);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const handleAddClick = () => {
-    if (name.trim() && quantity > 0) {
-      onAddItem({ name, quantity: Number(quantity) });
-      setName("");
-      setQuantity(0);
+  const handleAddClick = async () => {
+    if (name.trim() && stock > 0) {
+      setIsLoading(true);
+      setError("");
+      try {
+        // Llamar a la función para crear el consumible
+        const newConsumable = await createConsumable({
+          name,
+          stock: Number(stock),
+        });
+
+        // Notificar al componente padre si es necesario
+        if (onAddItem) {
+          onAddItem(newConsumable);
+        }
+
+        // Limpiar los campos del formulario
+        setName("");
+        setStock(0);
+      } catch (error) {
+        // Manejar errores
+        setError(error.message || "Hubo un problema al agregar el consumible.");
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setError("Por favor, completa todos los campos correctamente.");
     }
   };
 
@@ -29,17 +54,21 @@ export default function AddItemForm({ onAddItem }) {
           type="number"
           min="1"
           placeholder="Cantidad"
-          value={quantity}
-          onChange={(e) => setQuantity(Number(e.target.value))}
+          value={stock}
+          onChange={(e) => setStock(Number(e.target.value))}
           className="border p-2 rounded w-24"
         />
         <button
           onClick={handleAddClick}
-          className="bg-green-500 text-white px-4 py-2 rounded w-full sm:w-auto"
+          disabled={isLoading}
+          className={`${
+            isLoading ? "bg-gray-400" : "bg-green-500"
+          } text-white px-4 py-2 rounded w-full sm:w-auto`}
         >
-          Agregar
+          {isLoading ? "Agregando..." : "Agregar"}
         </button>
       </div>
+      {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
     </div>
   );
 }

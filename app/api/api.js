@@ -39,6 +39,7 @@ export async function login(email, password) {
   }
 }
 
+//CREATE RECORD
 export async function createRecord(formData, token) {
   try {
     const response = await fetch(`${API_URL}/record`, {
@@ -95,63 +96,16 @@ export async function getRecords(filter = {}) {
   }
 }
 
-// GET Record by ID
-export async function getRecordById(id) {
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(`${API_URL}/record/${id}`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: ` ${token}`,
-      },
-    });
-
-    if (!res.ok) {
-      throw new Error("Error al obtener el registro");
-    }
-
-    return await res.json();
-  } catch (error) {
-    throw error;
-  }
-}
-
-// UPDATE Record by ID
-export async function updateRecord(id, data) {
-  try {
-    const token = localStorage.getItem("token");
-
-    const res = await fetch(`${API_URL}/records/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify(data),
-    });
-
-    if (!res.ok) {
-      throw new Error("Error al actualizar el registro");
-    }
-
-    return await res.json();
-  } catch (error) {
-    throw error;
-  }
-}
-
 // DELETE Record by ID
 export async function deleteRecord(id) {
   try {
     const token = localStorage.getItem("token");
 
-    const res = await fetch(`${API_URL}/records/${id}`, {
+    const res = await fetch(`${API_URL}/record/${id}`, {
       method: "DELETE",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        Authorization: ` ${token}`,
       },
     });
 
@@ -161,6 +115,57 @@ export async function deleteRecord(id) {
 
     return await res.json();
   } catch (error) {
+    throw error;
+  }
+}
+
+// CREATE Consumable
+export async function createConsumable(data) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_URL}/consumables`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ` ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Error al crear el consumible");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error en createConsumable:", error.message);
+    throw error;
+  }
+}
+
+//GET ALL CONSUMABLES
+export async function getAllConsumables() {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_URL}/consumables`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ` ${token}`,
+      },
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Error al obtener los consumibles");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error en getAllConsumables:", error.message);
     throw error;
   }
 }

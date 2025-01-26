@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getRecords } from "../api/api";
+import { getRecords, deleteRecord } from "../api/api";
 import Filters from "./Filters";
 import ExportButtons from "./ExportButtons"; // Asegúrate de importar ExportButtons
 
@@ -96,6 +96,25 @@ export default function Table() {
     }
   };
 
+  const handleDelete = async (id) => {
+    const confirmDelete = window.confirm(
+      "¿Estás seguro de que deseas eliminar este registro?"
+    );
+    if (confirmDelete) {
+      try {
+        await deleteRecord(id);
+        setData((prevData) => prevData.filter((record) => record._id !== id));
+        setFilteredData((prevFiltered) =>
+          prevFiltered.filter((record) => record._id !== id)
+        );
+        alert("Registro eliminado exitosamente");
+      } catch (error) {
+        console.error("Error al eliminar el registro:", error);
+        alert("Hubo un error al intentar eliminar el registro");
+      }
+    }
+  };
+
   const totalRecords = filteredData.length;
   const startIndex = currentPage * recordsPerPage + 1;
   const endIndex = Math.min(startIndex + recordsPerPage - 1, totalRecords);
@@ -117,12 +136,13 @@ export default function Table() {
               <th className="p-3 border-b text-black">Consumible</th>
               <th className="p-3 border-b text-black">Cantidad</th>
               <th className="p-3 border-b text-black">Fecha</th>
+              <th className="p-3 border-b text-black">Acciones</th>
             </tr>
           </thead>
           <tbody>
             {displayedData.length === 0 ? (
               <tr>
-                <td colSpan="5" className="p-3 text-center text-black">
+                <td colSpan="7" className="p-3 text-center text-black">
                   No hay registros disponibles
                 </td>
               </tr>
@@ -149,47 +169,57 @@ export default function Table() {
                       timeZone: "UTC",
                     })}
                   </td>
+                  <td className="p-3 border-b text-black text-left">
+                    <button
+                      onClick={() => handleDelete(record._id)}
+                      className="text-red-500 hover:text-red-700"
+                    >
+                      <img
+                        src="icon/remove-icon.png"
+                        alt="Eliminar"
+                        className="w-5 h-5"
+                      />
+                    </button>
+                  </td>
                 </tr>
               ))
             )}
           </tbody>
         </table>
       </div>
-      {/* Contenedor para la paginación y botones de exportación */}
-      <div className="mt-4 p-4 bg-gray-100 rounded-lg">
-        <div className="flex items-center justify-between">
-          <button
-            onClick={handleLoadPrev}
-            disabled={currentPage === 0}
-            className={`${
-              currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            <img
-              src="icon/left-arrow-icon.png"
-              alt="Retroceder"
-              className="h-6 w-6"
-            />
-          </button>
-          <span className="text-gray-600">
-            {startIndex}–{endIndex} de {totalRecords}
-          </span>
-          <button
-            onClick={handleLoadNext}
-            disabled={endIndex === totalRecords}
-            className={`${
-              endIndex === totalRecords ? "opacity-50 cursor-not-allowed" : ""
-            }`}
-          >
-            <img
-              src="icon/right-arrow-icon.png"
-              alt="Avanzar"
-              className="h-6 w-6"
-            />
-          </button>
-        </div>
-        {/* Botones de exportación debajo de la paginación */}
-        <div className="mt-4">
+      <div className="mt-4 p-4 bg-gray-100 rounded-lg flex items-center justify-between">
+        <button
+          onClick={handleLoadPrev}
+          disabled={currentPage === 0}
+          className={`${
+            currentPage === 0 ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <img
+            src="icon/left-arrow-icon.png"
+            alt="Retroceder"
+            className="h-6 w-6"
+          />
+        </button>
+        <span className="text-gray-600">
+          {startIndex}–{endIndex} de {totalRecords}
+        </span>
+        <button
+          onClick={handleLoadNext}
+          disabled={endIndex === totalRecords}
+          className={`${
+            endIndex === totalRecords ? "opacity-50 cursor-not-allowed" : ""
+          }`}
+        >
+          <img
+            src="icon/right-arrow-icon.png"
+            alt="Avanzar"
+            className="h-6 w-6"
+          />
+        </button>
+      </div>
+      <div className="mt-3 flex justify-center">
+        <div className="w-full">
           <ExportButtons data={displayedData} />
         </div>
       </div>
