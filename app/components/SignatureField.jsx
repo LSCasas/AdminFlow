@@ -1,19 +1,33 @@
-import React, { useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import SignatureCanvas from "react-signature-canvas";
 
-export default function SignatureField({ setFirma }) {
+const FirmaDigital = ({ onFirmaChange, firmaCargada, clearCanvas }) => {
+  const [firma, setFirma] = useState(firmaCargada || "");
   const sigCanvas = useRef(null);
 
-  // Función para limpiar el lienzo de la firma
-  const handleClear = () => {
-    sigCanvas.current.clear();
-    setFirma(""); // Limpia la firma almacenada
-  };
+  useEffect(() => {
+    if (firmaCargada) {
+      setFirma(firmaCargada);
+    }
+  }, [firmaCargada]);
 
-  // Función para guardar la firma como una imagen en formato base64
-  const handleSave = () => {
-    const signatureData = sigCanvas.current.toDataURL();
-    setFirma(signatureData); // Almacena la firma en el estado padre
+  useEffect(() => {
+    if (clearCanvas) {
+      // Si se activa clearCanvas, limpiamos la firma
+      if (sigCanvas.current) {
+        sigCanvas.current.clear();
+      }
+      setFirma(""); // Limpia el estado de la firma
+      onFirmaChange(""); // Notifica al componente padre que se borró la firma
+    }
+  }, [clearCanvas, onFirmaChange]);
+
+  const handleSignatureEnd = () => {
+    if (sigCanvas.current) {
+      const signatureData = sigCanvas.current.getTrimmedCanvas().toDataURL(); // Obtén la firma en formato base64
+      setFirma(signatureData);
+      onFirmaChange(signatureData); // Notifica al componente padre sobre la nueva firma
+    }
   };
 
   return (
@@ -24,36 +38,48 @@ export default function SignatureField({ setFirma }) {
       >
         Firma
       </label>
-      <div className="border border-[#B0005E] rounded-md p-4">
-        {/* Componente de firma */}
+
+      {/* Si la firma existe y es un formato base64, renderízala como una imagen */}
+      {firma && firma.startsWith("data:image/png;base64") ? (
+        <img
+          src={firma} // Usa el base64 como fuente de la imagen
+          alt="Firma Digital"
+          className="w-full h-32 border p-2 rounded"
+        />
+      ) : (
+        // Si no hay firma, muestra el canvas para dibujarla
         <SignatureCanvas
           ref={sigCanvas}
           penColor="black"
           canvasProps={{
-            width: 400,
-            height: 150,
-            className: "sigCanvas",
+            className: "w-full h-32 border p-2 rounded",
+            style: {
+              borderColor: "#B0005E",
+              width: "100%",
+              height: "100%",
+              touchAction: "none", // Evita el zoom en dispositivos táctiles
+            },
           }}
+          onEnd={handleSignatureEnd}
         />
-        <div className="mt-2 flex justify-between">
-          {/* Botón para limpiar la firma */}
-          <button
-            type="button"
-            className="py-1 px-3 bg-gray-300 rounded hover:bg-gray-400"
-            onClick={handleClear}
-          >
-            Limpiar
-          </button>
-          {/* Botón para guardar la firma */}
-          <button
-            type="button"
-            className="py-1 px-3 bg-[#B0005E] text-white rounded hover:bg-[#6C0036]"
-            onClick={handleSave}
-          >
-            Guardar Firma
-          </button>
-        </div>
-      </div>
+      )}
+
+      {/* Verifica si clearCanvas es una función antes de llamarla */}
+      <button
+        type="button"
+        onClick={() => {
+          if (sigCanvas.current) {
+            sigCanvas.current.clear(); // Solo limpia si sigCanvas es válido
+          }
+          setFirma(""); // Limpia el estado de la firma
+          onFirmaChange(""); // Notifica al componente padre que se borró la firma
+        }}
+        className="mt-2 text-red-500 hover:text-red-700"
+      >
+        Limpiar Firma
+      </button>
     </div>
   );
-}
+};
+
+export default FirmaDigital;

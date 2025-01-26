@@ -2,8 +2,8 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
-import FirmaDigital from "./FirmaDigital"; // Importa correctamente
-import { getRecords, createRecord } from "../api/api"; // Asegúrate de que estas funciones estén exportadas
+import FirmaDigital from "./SignatureField";
+import { getRecords, createRecord } from "../api/api";
 import { useRouter } from "next/router";
 
 export default function ConsumibleForm() {
@@ -23,7 +23,7 @@ export default function ConsumibleForm() {
   const router = useRouter();
 
   const handleFirmaChange = (newFirma) => {
-    setFirma(newFirma); // Actualiza la firma al cambiarla
+    setFirma(newFirma);
   };
 
   useEffect(() => {
@@ -41,15 +41,15 @@ export default function ConsumibleForm() {
   }, []);
 
   const handleClearFirma = () => {
-    setFirma(""); // Limpia la firma en el estado local
+    setFirma("");
     if (sigCanvas.current) {
-      sigCanvas.current.clear(); // Limpia el canvas de la firma
+      sigCanvas.current.clear();
     }
   };
 
   const handleClickOutside = (e) => {
     if (e.target.closest("#nombre") === null) {
-      setNombresSugeridos([]); // Cerrar las sugerencias
+      setNombresSugeridos([]);
     }
   };
 
@@ -79,13 +79,13 @@ export default function ConsumibleForm() {
         record.user_id.name.toLowerCase() === nombre.toLowerCase()
     );
     if (record) {
-      setSelectedRecord(record); // Actualiza el estado con el record encontrado
+      setSelectedRecord(record);
       setValue("nombre", record.user_id.name);
       setValue("area", record.area_id?.name);
       setValue("consumible", record.consumable_id?.name);
       setValue("cantidad", record.consumable_id?.quantity);
       setValue("firma", record.user_id?.signature);
-      setFirma(record.user_id?.signature); // Actualizar la firma en el estado
+      setFirma(record.user_id?.signature);
     }
   };
   const onSubmit = async (data) => {
@@ -99,7 +99,7 @@ export default function ConsumibleForm() {
       try {
         const response = await createRecord(formData, `${token}`);
         if (response.success) {
-          toast.success("Record exitoso", {
+          toast.success("Registro exitoso", {
             position: window.innerWidth < 640 ? "top-center" : "bottom-left",
             style: {
               fontSize: "20px",
@@ -170,14 +170,14 @@ export default function ConsumibleForm() {
               {nombresSugeridos.map((record) => (
                 <li
                   key={record.id}
-                  className="cursor-pointer px-4 py-2 hover:bg-[#B0005E] hover:text-white " // Agregado font-bold
+                  className="cursor-pointer px-4 py-2 hover:bg-[#B0005E] hover:text-white "
                   onClick={() => {
                     setValue("nombre", record.user_id.name);
                     setValue("area", record.area_id.name);
                     setValue("consumible", record.consumable_id.name);
                     setValue("cantidad", record.consumable_id.quantity);
                     setValue("firma", record.user_id.signature);
-                    setNombresSugeridos([]); // Ocultar las sugerencias después de seleccionar un nombre
+                    setNombresSugeridos([]);
                   }}
                 >
                   {record.user_id.name}
@@ -272,13 +272,13 @@ export default function ConsumibleForm() {
             type="date"
             id="fecha"
             name="fecha"
-            defaultValue={new Date().toISOString().split("T")[0]} // Fecha de hoy en formato YYYY-MM-DD
+            defaultValue={new Date().toISOString().split("T")[0]}
             className={clsx(
               "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
               { "border-red-500": errors.fecha }
             )}
             {...register("fecha", { required: "Fecha es requerida" })}
-            readOnly // Hace que el campo sea no editable
+            readOnly
           />
           {errors.fecha && (
             <p className="text-red-500 text-sm mt-1">{errors.fecha.message}</p>
@@ -289,7 +289,7 @@ export default function ConsumibleForm() {
         <FirmaDigital
           onFirmaChange={handleFirmaChange}
           firmaCargada={firma}
-          onClearFirma={handleClearFirma} // Agrega esta línea
+          onClearFirma={handleClearFirma}
         />
 
         {/* Botón de Enviar */}
