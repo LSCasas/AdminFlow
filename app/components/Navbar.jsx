@@ -10,12 +10,16 @@ export default function Navbar() {
       setIsAuthenticated(true);
     }
   }, []);
-
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+  };
   return (
     <div className="bg-gradient-to-r from-[#B0005E] to-[#6C0036] py-4">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <Link href="/dashboard">
-          <img src="/icon/home-icon.png" alt="home" className="h-16 mb-4" />
+          {isAuthenticated && (
+            <img src="/icon/home-icon.png" alt="home" className="h-16 mb-4" />
+          )}
         </Link>
         <div className="sm:flex space-x-6 text-white">
           {isAuthenticated && (
@@ -28,6 +32,11 @@ export default function Navbar() {
               </Link>
               <Link href="/inventario">
                 <button className="hover:text-gray-300">Inventario</button>
+              </Link>
+              <Link href="/">
+                <button className="hover:text-gray-300" onClick={handleLogout}>
+                  Salir
+                </button>
               </Link>
             </>
           )}
