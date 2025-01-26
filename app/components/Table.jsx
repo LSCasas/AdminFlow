@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getRecords, deleteRecord } from "../api/api";
+import { toast, Toaster } from "sonner";
+
 import Filters from "./Filters";
 import ExportButtons from "./ExportButtons";
 
@@ -107,7 +109,15 @@ export default function Table() {
         setFilteredData((prevFiltered) =>
           prevFiltered.filter((record) => record._id !== id)
         );
-        alert("Registro eliminado exitosamente");
+        toast.success("Registro eliminado exitosamente", {
+          position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+          style: {
+            fontSize: "16px",
+            padding: "15px",
+            maxWidth: "90vw",
+            width: "auto",
+          },
+        });
       } catch (error) {
         console.error("Error al eliminar el registro:", error);
         alert("Hubo un error al intentar eliminar el registro");
@@ -223,6 +233,7 @@ export default function Table() {
           <ExportButtons data={displayedData} />
         </div>
       </div>
+      <Toaster />
     </div>
   );
 }

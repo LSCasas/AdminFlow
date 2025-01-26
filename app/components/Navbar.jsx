@@ -15,11 +15,7 @@ export default function Navbar() {
     <div className="bg-gradient-to-r from-[#B0005E] to-[#6C0036] py-4">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <Link href="/dashboard">
-          <img
-            src="/logos/logocultura.png"
-            alt="Logo Cultura"
-            className="h-16 mb-4"
-          />
+          <img src="/icon/home-icon.png" alt="home" className="h-16 mb-4" />
         </Link>
         <div className="sm:flex space-x-6 text-white">
           {isAuthenticated && (
