@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import Link from "next/link";
-
+import useAuthLogIn from "../hooks/useAuthLogIn";
 export default function Navbar() {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
-
+  useAuthLogIn();
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {

@@ -1,10 +1,10 @@
 import React from "react";
-import LoginForm from "@/components/LoginForm";
 import Navbar from "@/components/Navbar";
+import LoginForm from "@/components/LoginForm";
 
-export default function LoginPage() {
+const Admin = () => {
   return (
-    <div className="bg-white min-h-screen flex flex-col">
+    <div className="min-h-screen bg-[#F8F9FA] flex flex-col">
       <Navbar />
       <div className="flex items-center justify-center flex-1">
         <div className="w-full max-w-md p-4">
@@ -13,4 +13,6 @@ export default function LoginPage() {
       </div>
     </div>
   );
-}
+};
+
+export default Admin;

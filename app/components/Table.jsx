@@ -24,8 +24,9 @@ export default function Table() {
       try {
         const response = await getRecords();
         if (response.success) {
-          setData(response.data);
-          setFilteredData(response.data);
+          const reversedData = response.data.reverse(); // Invertir el orden de los registros
+          setData(reversedData);
+          setFilteredData(reversedData);
         } else {
           console.error("Error al obtener los registros:", response.message);
         }

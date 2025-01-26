@@ -86,10 +86,6 @@ export async function getRecords(filter = {}) {
       },
     });
 
-    if (!res.ok) {
-      throw new Error("Error al obtener los registros");
-    }
-
     return await res.json();
   } catch (error) {
     throw error;
