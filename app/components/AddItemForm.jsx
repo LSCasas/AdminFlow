@@ -19,7 +19,6 @@ export default function AddItemForm({ onAddItem, filterItems }) {
         });
 
         if (newConsumable?.success) {
-          // Mostrar mensaje de éxito
           toast.success("Registro exitoso", {
             position: window.innerWidth < 640 ? "top-center" : "bottom-left",
             style: {

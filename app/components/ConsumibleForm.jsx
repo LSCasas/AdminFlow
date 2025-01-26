@@ -1,9 +1,9 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
-import SignatureCanvas from "react-signature-canvas";
-import { createRecord } from "../api/api";
+import FirmaDigital from "./FirmaDigital"; // Importa correctamente
+import { getRecords, createRecord } from "../api/api"; // Asegúrate de que estas funciones estén exportadas
 import { useRouter } from "next/router";
 
 export default function ConsumibleForm() {
@@ -11,12 +11,83 @@ export default function ConsumibleForm() {
     register,
     handleSubmit,
     formState: { errors },
+    setValue,
   } = useForm();
 
   const [firma, setFirma] = useState("");
+  const [selectedRecord, setSelectedRecord] = useState(null);
+  const [nombresRegistrados, setNombresRegistrados] = useState([]);
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [nombresSugeridos, setNombresSugeridos] = useState([]);
   const sigCanvas = useRef(null);
   const router = useRouter();
 
+  const handleFirmaChange = (newFirma) => {
+    setFirma(newFirma); // Actualiza la firma al cambiarla
+  };
+
+  useEffect(() => {
+    const fetchRecords = async () => {
+      try {
+        const response = await getRecords();
+        if (Array.isArray(response.data)) {
+          setNombresRegistrados(response.data);
+        }
+      } catch (error) {
+        console.error("Error al obtener los consumibles:", error.message);
+      }
+    };
+    fetchRecords();
+  }, []);
+
+  const handleClearFirma = () => {
+    setFirma(""); // Limpia la firma en el estado local
+    if (sigCanvas.current) {
+      sigCanvas.current.clear(); // Limpia el canvas de la firma
+    }
+  };
+
+  const handleClickOutside = (e) => {
+    if (e.target.closest("#nombre") === null) {
+      setNombresSugeridos([]); // Cerrar las sugerencias
+    }
+  };
+
+  useEffect(() => {
+    document.addEventListener("click", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("click", handleClickOutside);
+    };
+  }, []);
+
+  const handleNombreChange = (e) => {
+    const nombre = e.target.value;
+
+    const recordsFiltrados = nombresRegistrados.filter(
+      (record) =>
+        record.user_id &&
+        record.user_id.name &&
+        record.user_id.name.toLowerCase().includes(nombre.toLowerCase())
+    );
+
+    setNombresSugeridos(recordsFiltrados);
+
+    const record = recordsFiltrados.find(
+      (record) =>
+        record.user_id &&
+        record.user_id.name.toLowerCase() === nombre.toLowerCase()
+    );
+    if (record) {
+      setSelectedRecord(record); // Actualiza el estado con el record encontrado
+      setValue("nombre", record.user_id.name);
+      setValue("area", record.area_id?.name);
+      setValue("consumible", record.consumable_id?.name);
+      setValue("cantidad", record.consumable_id?.quantity);
+      setValue("firma", record.user_id?.signature);
+      setFirma(record.user_id?.signature); // Actualizar la firma en el estado
+    }
+  };
   const onSubmit = async (data) => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -26,10 +97,9 @@ export default function ConsumibleForm() {
       };
 
       try {
-        const response = await createRecord(formData, ` ${token}`);
-
+        const response = await createRecord(formData, `${token}`);
         if (response.success) {
-          toast.success("Registro exitoso", {
+          toast.success("Record exitoso", {
             position: window.innerWidth < 640 ? "top-center" : "bottom-left",
             style: {
               fontSize: "20px",
@@ -38,7 +108,6 @@ export default function ConsumibleForm() {
               width: "auto",
             },
           });
-
           router.push("/historialDeRegistros");
         } else {
           toast.error("Error al registrar el consumible", {
@@ -63,24 +132,9 @@ export default function ConsumibleForm() {
           },
         });
       }
-    } else {
-      console.error("Token no encontrado");
-      toast.error("Token no encontrado en el localStorage", {
-        position: window.innerWidth < 640 ? "top-center" : "bottom-left",
-        style: {
-          fontSize: "20px",
-          padding: "20px",
-          maxWidth: "90vw",
-          width: "auto",
-        },
-      });
     }
   };
 
-  const handleClearSignature = () => {
-    sigCanvas.current.clear();
-    setFirma("");
-  };
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 w-full">
       <Toaster />
@@ -105,9 +159,31 @@ export default function ConsumibleForm() {
               { "border-red-500": errors.nombre }
             )}
             {...register("nombre", { required: "Nombre es requerido" })}
+            onChange={handleNombreChange}
           />
           {errors.nombre && (
             <p className="text-red-500 text-sm mt-1">{errors.nombre.message}</p>
+          )}
+          {/* Lista de sugerencias */}
+          {nombresSugeridos.length > 0 && (
+            <ul className="mt-2 max-h-48 overflow-y-auto border border-[#B0005E] rounded-md bg-white shadow-lg text-neutral-500">
+              {nombresSugeridos.map((record) => (
+                <li
+                  key={record.id}
+                  className="cursor-pointer px-4 py-2 hover:bg-[#B0005E] hover:text-white " // Agregado font-bold
+                  onClick={() => {
+                    setValue("nombre", record.user_id.name);
+                    setValue("area", record.area_id.name);
+                    setValue("consumible", record.consumable_id.name);
+                    setValue("cantidad", record.consumable_id.quantity);
+                    setValue("firma", record.user_id.signature);
+                    setNombresSugeridos([]); // Ocultar las sugerencias después de seleccionar un nombre
+                  }}
+                >
+                  {record.user_id.name}
+                </li>
+              ))}
+            </ul>
           )}
         </div>
 
@@ -210,29 +286,11 @@ export default function ConsumibleForm() {
         </div>
 
         {/* Campo Firma Digital */}
-        <div className="mb-4">
-          <label
-            htmlFor="firma"
-            className="block text-sm font-medium text-[#6C0036]"
-          >
-            Firma
-          </label>
-          <SignatureCanvas
-            ref={sigCanvas}
-            penColor="black"
-            canvasProps={{ className: "w-full h-32 border p-2 rounded" }}
-            onEnd={() =>
-              setFirma(sigCanvas.current.getTrimmedCanvas().toDataURL())
-            }
-          />
-          <button
-            type="button"
-            onClick={handleClearSignature}
-            className="mt-2 text-red-500 hover:text-red-700"
-          >
-            Limpiar Firma
-          </button>
-        </div>
+        <FirmaDigital
+          onFirmaChange={handleFirmaChange}
+          firmaCargada={firma}
+          onClearFirma={handleClearFirma} // Agrega esta línea
+        />
 
         {/* Botón de Enviar */}
         <div className="text-center">

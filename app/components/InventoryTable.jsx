@@ -30,7 +30,6 @@ export default function InventoryTable() {
         console.error("Error al obtener los consumibles:", error.message);
       }
     };
-
     fetchConsumables();
   }, []);
 
