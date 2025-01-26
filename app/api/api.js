@@ -169,3 +169,29 @@ export async function getAllConsumables() {
     throw error;
   }
 }
+
+// UPDATE Consumable
+export async function updateConsumable(id, updates) {
+  try {
+    const token = localStorage.getItem("token");
+
+    const res = await fetch(`${API_URL}/consumables/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ` ${token}`,
+      },
+      body: JSON.stringify(updates),
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.message || "Error al actualizar el consumible");
+    }
+
+    return await res.json();
+  } catch (error) {
+    console.error("Error en updateConsumable:", error.message);
+    throw error;
+  }
+}

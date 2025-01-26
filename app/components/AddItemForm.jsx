@@ -1,7 +1,8 @@
 import React, { useState } from "react";
-import { createConsumable } from "../api/api"; // Asegúrate de que la ruta sea correcta
+import { toast, Toaster } from "sonner";
+import { createConsumable } from "../api/api";
 
-export default function AddItemForm({ onAddItem }) {
+export default function AddItemForm({ onAddItem, filterItems }) {
   const [name, setName] = useState("");
   const [stock, setStock] = useState(0);
   const [isLoading, setIsLoading] = useState(false);
@@ -12,23 +13,51 @@ export default function AddItemForm({ onAddItem }) {
       setIsLoading(true);
       setError("");
       try {
-        // Llamar a la función para crear el consumible
         const newConsumable = await createConsumable({
           name,
           stock: Number(stock),
         });
 
-        // Notificar al componente padre si es necesario
-        if (onAddItem) {
-          onAddItem(newConsumable);
-        }
+        if (newConsumable?.success) {
+          // Mostrar mensaje de éxito
+          toast.success("Registro exitoso", {
+            position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+            style: {
+              fontSize: "16px",
+              padding: "15px",
+              maxWidth: "90vw",
+              width: "auto",
+            },
+          });
 
-        // Limpiar los campos del formulario
-        setName("");
-        setStock(0);
+          if (onAddItem) {
+            onAddItem(newConsumable);
+          }
+
+          if (filterItems) {
+            filterItems(name);
+          }
+
+          setName("");
+          setStock(0);
+        } else {
+          throw new Error("Error al registrar el consumible.");
+        }
       } catch (error) {
         // Manejar errores
         setError(error.message || "Hubo un problema al agregar el consumible.");
+        toast.error(
+          error.message || "Hubo un problema al agregar el consumible.",
+          {
+            position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+            style: {
+              fontSize: "16px",
+              padding: "15px",
+              maxWidth: "90vw",
+              width: "auto",
+            },
+          }
+        );
       } finally {
         setIsLoading(false);
       }
@@ -39,25 +68,30 @@ export default function AddItemForm({ onAddItem }) {
 
   return (
     <div className="bg-gray-100 p-4 rounded mb-6">
-      <h2 className="text-lg font-bold mb-4 text-center sm:text-left">
+      <h2 className="text-lg text-zinc-800 font-bold mb-4 text-center sm:text-left">
         Agregar Nuevo Consumible
       </h2>
       <div className="flex flex-wrap gap-4 items-center">
+        {/* Input para el nombre */}
         <input
           type="text"
           placeholder="Nombre del consumible"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          className="border p-2 rounded flex-1 min-w-[150px]"
+          className="border p-2 rounded flex-1 min-w-[150px] text-black"
+          style={{ color: "black" }}
         />
+        {/* Input para la cantidad */}
         <input
           type="number"
           min="1"
           placeholder="Cantidad"
           value={stock}
           onChange={(e) => setStock(Number(e.target.value))}
-          className="border p-2 rounded w-24"
+          className="border p-2 rounded w-24 text-black"
+          style={{ color: "black" }}
         />
+        {/* Botón para agregar */}
         <button
           onClick={handleAddClick}
           disabled={isLoading}
@@ -69,6 +103,7 @@ export default function AddItemForm({ onAddItem }) {
         </button>
       </div>
       {error && <p className="text-red-500 text-sm mt-2">{error}</p>}
+      <Toaster />
     </div>
   );
 }

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { getRecords, deleteRecord } from "../api/api";
 import Filters from "./Filters";
-import ExportButtons from "./ExportButtons"; // Asegúrate de importar ExportButtons
+import ExportButtons from "./ExportButtons";
 
 export default function Table() {
   const [data, setData] = useState([]);

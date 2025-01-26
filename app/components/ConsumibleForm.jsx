@@ -18,8 +18,6 @@ export default function ConsumibleForm() {
   const router = useRouter();
 
   const onSubmit = async (data) => {
-    console.log("Form data", data);
-
     const token = localStorage.getItem("token");
     if (token) {
       const formData = {
