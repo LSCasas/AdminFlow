@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "../components/Navbar";
-import InventoryTable from "../components/InventoryTable";
-import AddItemForm from "../components/AddItemForm";
+import Navbar from "../components/layout/Navbar";
+import InventoryTable from "../components/inventory/InventoryTable";
+import AddItemForm from "../components/consumables/AddItemForm";
 
 export default function Inventario() {
   return (

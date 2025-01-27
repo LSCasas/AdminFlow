@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { toast, Toaster } from "sonner";
-import { createConsumable } from "../api/api";
+import { createConsumable } from "@/api/api";
 
 export default function AddItemForm({ onAddItem, filterItems }) {
   const [name, setName] = useState("");

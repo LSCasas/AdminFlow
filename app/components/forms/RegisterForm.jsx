@@ -3,9 +3,9 @@ import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
 import { useRouter } from "next/router";
-import { login } from "../api/api";
+import { createAdmin } from "@/api/api";
 
-export default function LoginForm() {
+export default function RegisterForm() {
   const {
     register,
     handleSubmit,
@@ -16,10 +16,11 @@ export default function LoginForm() {
 
   const onSubmit = async (data) => {
     try {
-      const response = await login(data.email, data.password);
-      const token = response.token;
-      localStorage.setItem("token", token);
-      toast.success("Bienvenido", {
+      const response = await createAdmin({
+        email: data.email,
+        password: data.password,
+      });
+      toast.success("Usuario registrado", {
         position: window.innerWidth < 640 ? "top-center" : "bottom-left",
         style: {
           fontSize: "20px",
@@ -31,11 +32,11 @@ export default function LoginForm() {
 
       router.push("/dashboard");
     } catch (error) {
-      console.error("Login failed:", error.message);
+      console.error("Registration failed:", error.message);
 
       toast.error(
         error.message ||
-          "Hubo un problema con el inicio de sesión. Intenta nuevamente.",
+          "Hubo un problema con el registro. Intenta nuevamente.",
         {
           position: window.innerWidth < 640 ? "top-center" : "bottom-left",
           style: {
@@ -54,12 +55,12 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="bg-white rounded-lg shadow-lg p-8 w-full">
+    <div className="bg-white rounded-lg shadow-lg p-8 w-[90vh]">
       <Toaster />
       <h2 className="mb-4 text-center text-2xl font-bold text-[#B0005E]">
-        Login
+        Registro
       </h2>
-      <form id="loginForm" onSubmit={handleSubmit(onSubmit)} method="POST">
+      <form id="registerForm" onSubmit={handleSubmit(onSubmit)} method="POST">
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -115,7 +116,7 @@ export default function LoginForm() {
             type="submit"
             className="w-full py-2 px-4 bg-[#B0005E] text-white rounded-md hover:bg-[#6C0036]"
           >
-            Log in
+            Registrar
           </button>
         </div>
       </form>

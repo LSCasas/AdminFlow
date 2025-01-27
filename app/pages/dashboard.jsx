@@ -1,7 +1,7 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
-import ActivitySummary from "@/components/ActivitySummary";
-import InventoryStatus from "@/components/InventoryStatus";
+import Navbar from "@/components/layout/Navbar";
+import ActivitySummary from "@/components/activity/ActivitySummary";
+import InventoryStatus from "@/components/inventory/InventoryStatus";
 
 const Dashboard = () => {
   return (

@@ -1,6 +1,6 @@
 import React from "react";
-import ConsumibleForm from "@/components/ConsumibleForm"; // Asegúrate de tener el archivo ConsumibleForm.js
-import Navbar from "@/components/Navbar"; // Asegúrate de tener el archivo Navbar.js
+import ConsumibleForm from "@/components/consumables/ConsumibleForm";
+import Navbar from "@/components/layout/Navbar";
 
 export default function ConsumibleFormPage() {
   return (

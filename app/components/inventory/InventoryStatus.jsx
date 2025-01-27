@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { getRecords } from "../api/api"; // Asumimos que esta es la misma API que usas
+import { getRecords } from "@/api/api"; // Asumimos que esta es la misma API que usas
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 

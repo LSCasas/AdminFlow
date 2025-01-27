@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { getRecords, deleteRecord } from "../api/api";
+import { getRecords, deleteRecord } from "@/api/api";
 import { toast, Toaster } from "sonner";
 
-import Filters from "./Filters";
-import ExportButtons from "./ExportButtons";
+import Filters from "../filters/Filters";
+import ExportButtons from "../consumables/ExportButtons";
 
 export default function Table() {
   const [data, setData] = useState([]);

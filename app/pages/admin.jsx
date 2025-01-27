@@ -1,6 +1,6 @@
 import React from "react";
-import Navbar from "@/components/Navbar";
-import RegisterForm from "@/components/RegisterForm";
+import Navbar from "@/components/layout/Navbar";
+import RegisterForm from "@/components/forms/RegisterForm";
 
 const Admin = () => {
   return (

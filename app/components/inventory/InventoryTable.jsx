@@ -4,10 +4,10 @@ import {
   getAllConsumables,
   updateConsumable,
   deleteConsumable,
-} from "../api/api";
-import InventoryFilters from "./InventoryFilters";
-import ConsumableRow from "./ConsumableRow";
-import Pagination from "./Pagination";
+} from "@/api/api";
+import InventoryFilters from "../filters/InventoryFilters";
+import ConsumableRow from "../consumables/ConsumableRow";
+import Pagination from "../forms/Pagination";
 
 export default function InventoryTable() {
   const [consumables, setConsumables] = useState([]);

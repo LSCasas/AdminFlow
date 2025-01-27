@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import { useForm } from "react-hook-form";
 import { toast, Toaster } from "sonner";
 import clsx from "clsx";
-import FirmaDigital from "./SignatureField";
-import { getRecords, createRecord } from "../api/api";
+import FirmaDigital from "../filters/SignatureField";
+import { getRecords, createRecord } from "@/api/api";
 import { useRouter } from "next/router";
-
+//md:p-2 p-0.5 border
 export default function ConsumibleForm() {
   const {
     register,
@@ -155,7 +155,7 @@ export default function ConsumibleForm() {
             id="nombre"
             name="nombre"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
               { "border-red-500": errors.nombre }
             )}
             {...register("nombre", { required: "Nombre es requerido" })}
@@ -200,7 +200,7 @@ export default function ConsumibleForm() {
             id="area"
             name="area"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md  md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
               { "border-red-500": errors.area }
             )}
             {...register("area", { required: "Área es requerida" })}
@@ -214,7 +214,7 @@ export default function ConsumibleForm() {
         <div className="mb-4">
           <label
             htmlFor="consumible"
-            className="block text-sm font-medium text-[#6C0036]"
+            className="block text-sm font-medium  border text-[#6C0036]"
           >
             Consumible
           </label>
@@ -223,7 +223,7 @@ export default function ConsumibleForm() {
             id="consumible"
             name="consumible"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
               { "border-red-500": errors.consumible }
             )}
             {...register("consumible", { required: "Consumible es requerido" })}
@@ -248,7 +248,7 @@ export default function ConsumibleForm() {
             id="cantidad"
             name="cantidad"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
               { "border-red-500": errors.cantidad }
             )}
             {...register("cantidad", { required: "Cantidad es requerida" })}

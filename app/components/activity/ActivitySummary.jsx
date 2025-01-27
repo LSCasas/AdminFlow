@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getRecords } from "../api/api";
+import { getRecords } from "@/api/api";
 
 const ActivitySummary = () => {
   const [records, setRecords] = useState([]);
