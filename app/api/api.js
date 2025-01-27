@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:5500";
+const API_URL = "https://adminflow-api.onrender.com";
 
 // REGISTER
 export async function createAdmin(data) {
@@ -74,6 +74,26 @@ export async function createRecord(formData, token) {
 
 // GET All Records
 export async function getRecords(filter = {}) {
+  try {
+    const token = localStorage.getItem("token");
+    const queryParams = new URLSearchParams(filter).toString();
+
+    const res = await fetch(`${API_URL}/record${queryParams}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: ` ${token}`,
+      },
+    });
+
+    return await res.json();
+  } catch (error) {
+    throw error;
+  }
+}
+
+// GET All Records analythic
+export async function getRecordsAnalysis(filter = {}) {
   try {
     const token = localStorage.getItem("token");
     const queryParams = new URLSearchParams(filter).toString();

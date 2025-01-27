@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
-import { getRecords } from "@/api/api";
+import { getRecordsAnalysis } from "@/api/api";
 
 const ActivitySummary = () => {
   const [records, setRecords] = useState([]);
@@ -9,7 +9,7 @@ const ActivitySummary = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await getRecords();
+        const response = await getRecordsAnalysis();
         if (response.success) {
           const lastFiveRecords = response.data.slice(-5).reverse(); // Invertir el orden
           setRecords(lastFiveRecords);

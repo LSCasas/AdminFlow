@@ -167,7 +167,14 @@ export default function ConsumibleForm() {
           {/* Lista de sugerencias */}
           {nombresSugeridos.length > 0 && (
             <ul className="mt-2 max-h-48 overflow-y-auto border border-[#B0005E] rounded-md bg-white shadow-lg text-neutral-500">
-              {nombresSugeridos.map((record) => (
+              {[
+                ...new Map(
+                  nombresSugeridos.map((record) => [
+                    record.user_id.name,
+                    record,
+                  ])
+                ).values(),
+              ].map((record) => (
                 <li
                   key={record.id}
                   className="cursor-pointer px-4 py-2 hover:bg-[#B0005E] hover:text-white "

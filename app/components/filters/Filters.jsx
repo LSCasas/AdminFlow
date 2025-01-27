@@ -15,7 +15,7 @@ export default function Filters({ onFilterChange }) {
   };
 
   return (
-    <div className="flex flex-wrap gap-4 p-4 bg-gray-100 rounded-md">
+    <div className="flex flex-wrap gap-4 p-4 bg-gray-100 rounded-md text-black">
       <input
         type="text"
         name="name"
