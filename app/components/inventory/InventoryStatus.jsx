@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Doughnut } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { getRecords } from "@/api/api"; // Asumimos que esta es la misma API que usas
+import { getRecords } from "@/api/api";
 
 ChartJS.register(ArcElement, Tooltip, Legend);
 
@@ -12,16 +12,16 @@ const InventoryStatus = () => {
   useEffect(() => {
     const fetchConsumables = async () => {
       try {
-        const response = await getRecords(); // Llamada a la API
+        const response = await getRecords();
         if (response.success) {
-          const consumables = response.data; // Suponiendo que 'response.data' tiene los consumibles
+          const consumables = response.data;
 
           // Agrupar consumibles por nombre y sumar las cantidades
           const groupedConsumables = consumables.reduce((acc, record) => {
             // Verificar si consumable_id existe antes de acceder a sus propiedades
             const consumable = record.consumable_id;
             if (consumable && consumable.name) {
-              const name = consumable.name.toLowerCase(); // Normalizamos el nombre a minúsculas
+              const name = consumable.name.toLowerCase();
               if (acc[name]) {
                 acc[name].quantity += consumable.quantity;
               } else {
@@ -40,10 +40,10 @@ const InventoryStatus = () => {
           // Ordenamos los consumibles por cantidad en orden descendente y seleccionamos los 5 más utilizados
           const sortedConsumables = consumablesArray
             .sort((a, b) => b.quantity - a.quantity)
-            .slice(0, 5); // Tomamos los 5 más utilizados
+            .slice(0, 5);
 
-          const labels = sortedConsumables.map((record) => record.name); // Obtener nombres de consumibles
-          const data = sortedConsumables.map((record) => record.quantity); // Obtener cantidades de consumibles
+          const labels = sortedConsumables.map((record) => record.name);
+          const data = sortedConsumables.map((record) => record.quantity);
 
           setConsumablesData({
             labels,
@@ -57,7 +57,7 @@ const InventoryStatus = () => {
                   "#FFCE56",
                   "#FF5733",
                   "#4CAF50",
-                ], // Puedes cambiar estos colores
+                ],
                 hoverBackgroundColor: [
                   "#FF4382",
                   "#2D8CFF",
