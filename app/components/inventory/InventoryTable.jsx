@@ -34,15 +34,18 @@ export default function InventoryTable() {
   }, []);
 
   useEffect(() => {
+    // Filtrar consumibles por el término de búsqueda
     const filtered = consumables.filter((consumable) =>
       consumable.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
+    // Establecer los consumibles que se mostrarán en la página actual
     const startIndex = currentPage * recordsPerPage;
     const endIndex = startIndex + recordsPerPage;
     setDisplayedConsumables(filtered.slice(startIndex, endIndex));
   }, [searchTerm, consumables, currentPage]);
 
+  // Función para manejar la adición de stock
   const handleAddStock = async (id, stock) => {
     const amount = parseInt(prompt("¿Cuántos deseas agregar al stock?"), 10);
     if (!isNaN(amount)) {
@@ -63,6 +66,7 @@ export default function InventoryTable() {
     }
   };
 
+  // Función para manejar la reducción de cantidad
   const handleReduceQuantity = async (id, quantity) => {
     const amount = parseInt(
       prompt("¿Cuántos deseas reducir de la cantidad?"),
@@ -86,6 +90,7 @@ export default function InventoryTable() {
     }
   };
 
+  // Función para manejar el reset de stock y cantidad
   const handleReset = async (id) => {
     const updates = { stock: 0, quantity: 0 };
     try {
@@ -101,6 +106,7 @@ export default function InventoryTable() {
     }
   };
 
+  // Función para manejar la eliminación de un consumible
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
       "¿Estás seguro de que deseas eliminar este consumible?, Algunas personas podrían estar relacionadas a este consumible."
@@ -127,6 +133,24 @@ export default function InventoryTable() {
     }
   };
 
+  // Función para asegurarse de que no haya consumibles duplicados
+  const mergeConsumables = (consumables) => {
+    const merged = [];
+    consumables.forEach((consumable) => {
+      const existing = merged.find(
+        (item) => item.name.toLowerCase() === consumable.name.toLowerCase()
+      );
+      if (existing) {
+        existing.stock += consumable.stock;
+        existing.quantity += consumable.quantity;
+      } else {
+        merged.push({ ...consumable });
+      }
+    });
+    return merged;
+  };
+
+  // Filtrar y unificar los consumibles antes de renderizarlos
   const totalRecords = consumables.filter((consumable) =>
     consumable.name.toLowerCase().includes(searchTerm.toLowerCase())
   ).length;
@@ -159,7 +183,7 @@ export default function InventoryTable() {
         </thead>
         <tbody>
           {displayedConsumables.length > 0 ? (
-            displayedConsumables.map((consumable) => (
+            mergeConsumables(displayedConsumables).map((consumable) => (
               <ConsumableRow
                 key={consumable._id}
                 consumable={consumable}

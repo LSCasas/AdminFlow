@@ -5,12 +5,13 @@ import { getRecords } from "@/api/api";
 const ActivitySummary = () => {
   const [records, setRecords] = useState([]);
   const router = useRouter();
+
   useEffect(() => {
     const fetchRecords = async () => {
       try {
         const response = await getRecords();
         if (response.success) {
-          const lastFiveRecords = response.data.slice(-5);
+          const lastFiveRecords = response.data.slice(-5).reverse(); // Invertir el orden
           setRecords(lastFiveRecords);
         } else {
           console.error("Error al obtener los registros:", response.message);
@@ -43,7 +44,7 @@ const ActivitySummary = () => {
               onClick={handleRecordClick}
             >
               {record.user_id?.name} -{" "}
-              <span className="p-3 border-b  text-left">
+              <span className="p-3 border-b text-left">
                 {new Date(record.date).toLocaleDateString("es-MX", {
                   timeZone: "UTC",
                 })}

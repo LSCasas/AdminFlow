@@ -14,20 +14,32 @@ const InventoryStatus = () => {
       try {
         const response = await getRecords(); // Llamada a la API
         if (response.success) {
-          // Aquí deberías procesar los datos de la respuesta para obtener las cantidades
           const consumables = response.data; // Suponiendo que 'response.data' tiene los consumibles
 
+          // Agrupar consumibles por nombre y sumar las cantidades
+          const groupedConsumables = consumables.reduce((acc, record) => {
+            const name = record.consumable_id.name.toLowerCase(); // Normalizamos el nombre a minúsculas
+            if (acc[name]) {
+              acc[name].quantity += record.consumable_id.quantity;
+            } else {
+              acc[name] = {
+                name: record.consumable_id.name,
+                quantity: record.consumable_id.quantity,
+              };
+            }
+            return acc;
+          }, {});
+
+          // Convertir el objeto agrupado en un array
+          const consumablesArray = Object.values(groupedConsumables);
+
           // Ordenamos los consumibles por cantidad en orden descendente y seleccionamos los 5 más utilizados
-          const sortedConsumables = consumables
-            .sort((a, b) => b.consumable_id.quantity - a.consumable_id.quantity)
+          const sortedConsumables = consumablesArray
+            .sort((a, b) => b.quantity - a.quantity)
             .slice(0, 5); // Tomamos los 5 más utilizados
 
-          const labels = sortedConsumables.map(
-            (record) => record.consumable_id.name
-          ); // Obtener nombres de consumibles
-          const data = sortedConsumables.map(
-            (record) => record.consumable_id.quantity
-          ); // Obtener cantidades de consumibles
+          const labels = sortedConsumables.map((record) => record.name); // Obtener nombres de consumibles
+          const data = sortedConsumables.map((record) => record.quantity); // Obtener cantidades de consumibles
 
           setConsumablesData({
             labels,
