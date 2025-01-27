@@ -2,8 +2,9 @@ import React from "react";
 import Navbar from "@/components/layout/Navbar";
 import ActivitySummary from "@/components/activity/ActivitySummary";
 import InventoryStatus from "@/components/inventory/InventoryStatus";
-
+import useNetworkRedirect from "@/hooks/useNetworkRedirect";
 const Dashboard = () => {
+  useNetworkRedirect();
   return (
     <div className="min-h-screen bg-[#F8F9FA]">
       <Navbar />
