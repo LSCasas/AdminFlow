@@ -18,14 +18,18 @@ const InventoryStatus = () => {
 
           // Agrupar consumibles por nombre y sumar las cantidades
           const groupedConsumables = consumables.reduce((acc, record) => {
-            const name = record.consumable_id.name.toLowerCase(); // Normalizamos el nombre a minúsculas
-            if (acc[name]) {
-              acc[name].quantity += record.consumable_id.quantity;
-            } else {
-              acc[name] = {
-                name: record.consumable_id.name,
-                quantity: record.consumable_id.quantity,
-              };
+            // Verificar si consumable_id existe antes de acceder a sus propiedades
+            const consumable = record.consumable_id;
+            if (consumable && consumable.name) {
+              const name = consumable.name.toLowerCase(); // Normalizamos el nombre a minúsculas
+              if (acc[name]) {
+                acc[name].quantity += consumable.quantity;
+              } else {
+                acc[name] = {
+                  name: consumable.name,
+                  quantity: consumable.quantity,
+                };
+              }
             }
             return acc;
           }, {});
