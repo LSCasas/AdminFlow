@@ -1,7 +1,7 @@
 {
-  "name": "Mi Aplicación",
-  "short_name": "App",
-  "description": "Una aplicación para registrar datos sin conexión.",
+  "name": "AdminFlow",
+  "short_name": "AdminFlow",
+  "description": "Una aplicación para registrar datos.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
