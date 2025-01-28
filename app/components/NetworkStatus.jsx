@@ -17,6 +17,8 @@ const NetworkStatus = () => {
     };
   }, []);
 
+  if (isOnline) return null; // No renderiza nada si está en línea
+
   return (
     <div
       style={{
@@ -24,13 +26,13 @@ const NetworkStatus = () => {
         top: 0,
         left: 0,
         right: 0,
-        backgroundColor: isOnline ? "green" : "red",
+        backgroundColor: "red",
         color: "white",
         padding: "10px",
         textAlign: "center",
       }}
     >
-      {isOnline ? "¡Estás en línea!" : "¡Estás fuera de línea!"}
+      ¡Estás fuera de línea!
     </div>
   );
 };

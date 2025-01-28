@@ -8,7 +8,7 @@ export default function ConsumibleFormPage() {
       {" "}
       {/* Fondo blanco para toda la página */}
       <Navbar />
-      <div className="container mx-auto p-8 bg-white">
+      <div className="w-full bg-white">
         {" "}
         {/* Fondo blanco para el contenedor */}
         <ConsumibleForm />

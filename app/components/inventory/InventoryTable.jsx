@@ -183,16 +183,18 @@ export default function InventoryTable() {
         </thead>
         <tbody>
           {displayedConsumables.length > 0 ? (
-            mergeConsumables(displayedConsumables).map((consumable) => (
-              <ConsumableRow
-                key={consumable._id}
-                consumable={consumable}
-                handleAddStock={handleAddStock}
-                handleReduceQuantity={handleReduceQuantity}
-                handleReset={handleReset}
-                handleDelete={handleDelete}
-              />
-            ))
+            mergeConsumables(displayedConsumables.reverse()).map(
+              (consumable) => (
+                <ConsumableRow
+                  key={consumable._id}
+                  consumable={consumable}
+                  handleAddStock={handleAddStock}
+                  handleReduceQuantity={handleReduceQuantity}
+                  handleReset={handleReset}
+                  handleDelete={handleDelete}
+                />
+              )
+            )
           ) : (
             <tr>
               <td colSpan="3" className="px-4 py-2 text-center text-black">

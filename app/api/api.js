@@ -1,4 +1,4 @@
-const API_URL = "https://adminflow-api.onrender.com";
+const API_URL = "https://adminflow-api-2.onrender.com";
 
 // REGISTER
 export async function createAdmin(data) {

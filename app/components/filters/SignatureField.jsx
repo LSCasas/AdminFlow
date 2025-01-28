@@ -31,7 +31,7 @@ const FirmaDigital = ({ onFirmaChange, firmaCargada, clearCanvas }) => {
   };
 
   return (
-    <div className="mb-4">
+    <div className="mb-20 h-[30vh]">
       <label
         htmlFor="firma"
         className="block text-sm font-medium text-[#6C0036]"
