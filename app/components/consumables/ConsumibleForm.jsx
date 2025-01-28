@@ -5,6 +5,11 @@ import clsx from "clsx";
 import FirmaDigital from "../filters/SignatureField";
 import { getRecords, createRecord } from "@/api/api";
 import { useRouter } from "next/router";
+import {
+  saveRecordOffline,
+  getOfflineRecords,
+  syncRecords,
+} from "@/utils/indexedDB";
 //md:p-2 p-0.5 border
 export default function ConsumibleForm() {
   const {
@@ -29,15 +34,57 @@ export default function ConsumibleForm() {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await getRecords();
-        if (Array.isArray(response.data)) {
-          setNombresRegistrados(response.data);
+        if (navigator.onLine) {
+          // Si hay conexión, obtener registros de la API
+          const response = await getRecords();
+          if (Array.isArray(response.data)) {
+            setNombresRegistrados(response.data);
+
+            // Guardar registros en IndexedDB para usarlos offline
+            for (const record of response.data) {
+              await saveRecordOffline(record);
+            }
+          }
+        } else {
+          // Si no hay conexión, obtener registros desde IndexedDB
+          const offlineRecords = await getOfflineRecords();
+          setNombresRegistrados(offlineRecords);
+          console.log("Datos cargados offline:", offlineRecords);
         }
       } catch (error) {
         console.error("Error al obtener los consumibles:", error.message);
       }
     };
+
+    const syncOfflineRecords = async () => {
+      if (navigator.onLine) {
+        try {
+          const offlineRecords = await getOfflineRecords(); // Asegúrate de obtener los registros offline
+          for (const record of offlineRecords) {
+            const token = localStorage.getItem("token");
+            if (token) {
+              await createRecord(record, token); // Subir cada registro
+              await saveRecordOffline({ ...record, synced: true }); // Actualizar como sincronizado en IndexedDB
+            }
+          }
+          console.log("Registros offline sincronizados con éxito.");
+        } catch (error) {
+          console.error(
+            "Error al sincronizar los registros offline:",
+            error.message
+          );
+        }
+      }
+    };
+
+    // Fetch de registros y sincronización inicial
     fetchRecords();
+
+    // Listener para sincronización automática al volver a estar online
+    window.addEventListener("online", syncOfflineRecords);
+
+    // Cleanup del listener
+    return () => window.removeEventListener("online", syncOfflineRecords);
   }, []);
 
   const handleClearFirma = () => {
@@ -90,14 +137,16 @@ export default function ConsumibleForm() {
   };
   const onSubmit = async (data) => {
     const token = localStorage.getItem("token");
-    if (token) {
-      const formData = {
-        ...data,
-        firma: firma,
-      };
+    const formData = {
+      ...data,
+      firma: firma,
+    };
 
+    if (navigator.onLine && token) {
+      // Si hay conexión a Internet, enviar a la API
       try {
-        const response = await createRecord(formData, `${token}`);
+        await saveRecordOffline({ ...formData, synced: false }); // Guardar como no sincronizado
+        const response = await createRecord(formData, token);
         if (response.success) {
           toast.success("Registro exitoso", {
             position: window.innerWidth < 640 ? "top-center" : "bottom-left",
@@ -123,6 +172,31 @@ export default function ConsumibleForm() {
       } catch (error) {
         console.error("Error al registrar el consumible:", error);
         toast.error("Hubo un error al registrar el consumible", {
+          position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+          style: {
+            fontSize: "20px",
+            padding: "20px",
+            maxWidth: "90vw",
+            width: "auto",
+          },
+        });
+      }
+    } else {
+      // Si no hay conexión, guardar localmente
+      try {
+        await saveRecordOffline(formData); // Guardar los datos localmente
+        toast.success("Registro guardado para sincronización offline", {
+          position: window.innerWidth < 640 ? "top-center" : "bottom-left",
+          style: {
+            fontSize: "20px",
+            padding: "20px",
+            maxWidth: "90vw",
+            width: "auto",
+          },
+        });
+      } catch (error) {
+        console.error("Error al guardar el registro offline:", error);
+        toast.error("Error al guardar el registro localmente", {
           position: window.innerWidth < 640 ? "top-center" : "bottom-left",
           style: {
             fontSize: "20px",

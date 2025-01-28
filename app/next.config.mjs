@@ -1,10 +1,10 @@
 import withPWA from "next-pwa";
 
 const nextConfig = withPWA({
-  dest: "public", // La carpeta donde se generarán los archivos de la PWA
-  disable: process.env.NODE_ENV === "development", // Deshabilita en desarrollo
-  register: true, // Registra automáticamente el service worker
-  skipWaiting: true, // Reemplaza el SW anterior al detectar cambios
+  dest: "public",
+  disable: process.env.NODE_ENV === "development",
+  register: true,
+  skipWaiting: true,
   runtimeCaching: [
     {
       urlPattern: /^https:\/\/fonts\.(gstatic|googleapis)\.com\/.*/i,
@@ -24,6 +24,18 @@ const nextConfig = withPWA({
         expiration: {
           maxEntries: 50,
           maxAgeSeconds: 30 * 24 * 60 * 60, // 30 días
+        },
+      },
+    },
+    {
+      urlPattern: /^\/.*$/i,
+      handler: "NetworkFirst",
+      options: {
+        cacheName: "pages-cache",
+        networkTimeoutSeconds: 10,
+        expiration: {
+          maxEntries: 100,
+          maxAgeSeconds: 7 * 24 * 60 * 60, // 7 días
         },
       },
     },
