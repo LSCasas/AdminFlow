@@ -170,7 +170,7 @@ export default function Table() {
                     {record.area_id?.name || "Sin área"}
                   </td>
                   <td className="p-3 border-b text-black text-left">
-                    {record.consumable_id?.name || "Sin consumible"}
+                    {record.conName || "Sin consumible"}
                   </td>
                   <td className="p-3 border-b text-black text-left">
                     {record.tempVal || "Sin consumible"}

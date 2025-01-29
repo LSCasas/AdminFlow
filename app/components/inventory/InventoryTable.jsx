@@ -109,7 +109,7 @@ export default function InventoryTable() {
   // Función para manejar la eliminación de un consumible
   const handleDelete = async (id) => {
     const confirmDelete = window.confirm(
-      "¿Estás seguro de que deseas eliminar este consumible?, Algunas personas podrían estar relacionadas a este consumible."
+      "¿Estás seguro de que deseas eliminar este consumible?"
     );
     if (confirmDelete) {
       try {

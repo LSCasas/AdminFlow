@@ -1,6 +1,5 @@
 const API_URL = "https://adminflow-api.onrender.com";
 //http://localhost:5500
-
 // REGISTER
 export async function createAdmin(data) {
   const res = await fetch(`${API_URL}/admin`, {
