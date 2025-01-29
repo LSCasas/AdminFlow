@@ -23,9 +23,9 @@ export const saveRecordOffline = async (record) => {
   try {
     const db = await dbPromise;
     await db.add("records", record);
-    console.log("Registro guardado en IndexedDB:", record);
+    //console.log("Registro guardado en IndexedDB:", record);
   } catch (error) {
-    console.error("Error al guardar el registro en IndexedDB:", error.message);
+    //console.error("Error al guardar el registro en IndexedDB:", error.message);
   }
 };
 
@@ -35,10 +35,10 @@ export const getOfflineRecords = async () => {
   try {
     const db = await dbPromise;
     const records = await db.getAll("records");
-    console.log("Registros obtenidos desde IndexedDB:", records);
+    //console.log("Registros obtenidos desde IndexedDB:", records);
     return records;
   } catch (error) {
-    console.error("Error al obtener registros de IndexedDB:", error.message);
+    //console.error("Error al obtener registros de IndexedDB:", error.message);
     return [];
   }
 };
@@ -51,7 +51,7 @@ export const syncRecords = async (syncCallback) => {
     for (const record of records) {
       await syncCallback(record);
     }
-    console.log("Sincronización completada.");
+    //console.log("Sincronización completada.");
   } catch (error) {
     console.error(
       "Error durante la sincronización de registros:",
@@ -66,8 +66,8 @@ export const clearOfflineRecords = async () => {
   try {
     const db = await dbPromise;
     await db.clear("records");
-    console.log("Todos los registros offline fueron eliminados.");
+    //console.log("Todos los registros offline fueron eliminados.");
   } catch (error) {
-    console.error("Error al eliminar registros de IndexedDB:", error.message);
+    //console.error("Error al eliminar registros de IndexedDB:", error.message);
   }
 };

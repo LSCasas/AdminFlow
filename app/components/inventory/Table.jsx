@@ -173,7 +173,7 @@ export default function Table() {
                     {record.consumable_id?.name || "Sin consumible"}
                   </td>
                   <td className="p-3 border-b text-black text-left">
-                    {record.consumable_id?.quantity || "Sin consumible"}
+                    {record.tempVal || "Sin consumible"}
                   </td>
                   <td className="p-3 border-b text-black text-left">
                     {new Date(record.date).toLocaleDateString("es-MX", {

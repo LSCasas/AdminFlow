@@ -29,6 +29,9 @@ export default function AddItemForm({ onAddItem, filterItems }) {
             },
           });
 
+          // Recargar la página
+          window.location.reload();
+
           if (onAddItem) {
             onAddItem(newConsumable);
           }
