@@ -84,7 +84,7 @@ const InventoryStatus = () => {
   if (loading) {
     return (
       <div className="w-full bg-white p-6 rounded-lg shadow-lg">
-        <h2 className="text-xl font-semibold text-[#6C0036]">
+        <h2 className="text-xl font-semibold text-[#1C2039]">
           Estado del Inventario
         </h2>
         <p>Cargando...</p>
@@ -94,7 +94,7 @@ const InventoryStatus = () => {
 
   return (
     <div className="w-full bg-white p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-semibold text-[#6C0036]">
+      <h2 className="text-xl font-semibold text-[#1C2039]">
         Estado del Inventario
       </h2>
       <div className="mt-4 md:h-[42vh]">

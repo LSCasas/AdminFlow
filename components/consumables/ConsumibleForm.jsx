@@ -213,7 +213,7 @@ export default function ConsumibleForm() {
     <div className="flex justify-center mt-5">
       <div className="bg-white rounded-lg shadow-lg md:p-8  md:w-[100vh] p-6 w-full">
         <Toaster />
-        <h2 className="mb-4 text-center text-2xl font-bold text-[#B0005E]">
+        <h2 className="mb-4 text-center text-2xl font-bold text-[#1C2039]">
           Registro de Consumibles
         </h2>
         <form
@@ -225,7 +225,7 @@ export default function ConsumibleForm() {
           <div className="mb-4">
             <label
               htmlFor="nombre"
-              className="block text-sm font-medium text-[#6C0036]"
+              className="block text-sm font-medium text-[#1C2039]"
             >
               Nombre
             </label>
@@ -234,7 +234,7 @@ export default function ConsumibleForm() {
               id="nombre"
               name="nombre"
               className={clsx(
-                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
+                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#1C2039] shadow-sm",
                 { "border-red-500": errors.nombre }
               )}
               {...register("nombre", { required: "Nombre es requerido" })}
@@ -247,7 +247,7 @@ export default function ConsumibleForm() {
             )}
             {/* Lista de sugerencias */}
             {nombresSugeridos.length > 0 && (
-              <ul className="mt-2 max-h-48 overflow-y-auto border border-[#B0005E] rounded-md bg-white shadow-lg text-neutral-500">
+              <ul className="mt-2 max-h-48 overflow-y-auto border border-[#1C2039] rounded-md bg-white shadow-lg text-neutral-500">
                 {[
                   ...new Map(
                     nombresSugeridos.map((record) => [
@@ -258,7 +258,7 @@ export default function ConsumibleForm() {
                 ].map((record) => (
                   <li
                     key={record.id}
-                    className="cursor-pointer px-4 py-2 hover:bg-[#B0005E] hover:text-white "
+                    className="cursor-pointer px-4 py-2 hover:bg-[#1C2039] hover:text-white "
                     onClick={() => {
                       setValue("nombre", record.user_id.name);
                       setValue("area", record.area_id.name);
@@ -279,7 +279,7 @@ export default function ConsumibleForm() {
           <div className="mb-4">
             <label
               htmlFor="area"
-              className="block text-sm font-medium text-[#6C0036]"
+              className="block text-sm font-medium text-[#1C2039]"
             >
               Área
             </label>
@@ -288,7 +288,7 @@ export default function ConsumibleForm() {
               id="area"
               name="area"
               className={clsx(
-                "text-black mt-1 block w-full rounded-md  md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
+                "text-black mt-1 block w-full rounded-md  md:p-2 p-0.5 border border-[#1C2039] shadow-sm",
                 { "border-red-500": errors.area }
               )}
               {...register("area", { required: "Área es requerida" })}
@@ -302,7 +302,7 @@ export default function ConsumibleForm() {
           <div className="mb-4">
             <label
               htmlFor="consumible"
-              className="block text-sm font-medium  border text-[#6C0036]"
+              className="block text-sm font-medium   text-[#1C2039]"
             >
               Consumible
             </label>
@@ -311,7 +311,7 @@ export default function ConsumibleForm() {
               id="consumible"
               name="consumible"
               className={clsx(
-                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
+                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#1C2039] shadow-sm",
                 { "border-red-500": errors.consumible }
               )}
               {...register("consumible", {
@@ -329,7 +329,7 @@ export default function ConsumibleForm() {
           <div className="mb-4">
             <label
               htmlFor="cantidad"
-              className="block text-sm font-medium text-[#6C0036]"
+              className="block text-sm font-medium text-[#1C2039]"
             >
               Cantidad
             </label>
@@ -338,7 +338,7 @@ export default function ConsumibleForm() {
               id="cantidad"
               name="cantidad"
               className={clsx(
-                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#B0005E] shadow-sm",
+                "text-black mt-1 block w-full rounded-md md:p-2 p-0.5 border border-[#1C2039] shadow-sm",
                 { "border-red-500": errors.cantidad }
               )}
               {...register("cantidad", { required: "Cantidad es requerida" })}
@@ -354,7 +354,7 @@ export default function ConsumibleForm() {
           <div className="mb-4">
             <label
               htmlFor="fecha"
-              className="block text-sm font-medium text-[#6C0036]"
+              className="block text-sm font-medium text-[#1C2039]"
             >
               Fecha
             </label>
@@ -364,7 +364,7 @@ export default function ConsumibleForm() {
               name="fecha"
               defaultValue={new Date().toISOString().split("T")[0]}
               className={clsx(
-                "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+                "text-black mt-1 block w-full rounded-md border-[#1C2039] shadow-sm",
                 { "border-red-500": errors.fecha }
               )}
               {...register("fecha", { required: "Fecha es requerida" })}
@@ -388,7 +388,7 @@ export default function ConsumibleForm() {
           <div className="text-center">
             <button
               type="submit"
-              className="w-full py-2 px-4 bg-[#B0005E] text-white rounded-md hover:bg-[#6C0036]"
+              className="w-full py-2 px-4 bg-[#EEB345] text-white rounded-md hover:bg-[#936F2B]"
             >
               Registrar Consumible
             </button>

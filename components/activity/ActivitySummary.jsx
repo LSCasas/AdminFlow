@@ -30,7 +30,7 @@ const ActivitySummary = () => {
 
   return (
     <div className="w-full bg-white p-6 rounded-lg shadow-lg">
-      <h2 className="text-xl font-semibold text-[#6C0036]">
+      <h2 className="text-xl font-semibold text-[#1C2039]">
         Últimos Registros
       </h2>
       <ul className="mt-4 space-y-4 text-neutral-600">

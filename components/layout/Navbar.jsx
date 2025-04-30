@@ -14,7 +14,7 @@ export default function Navbar() {
     localStorage.removeItem("token");
   };
   return (
-    <div className="bg-gradient-to-r from-[#B0005E] to-[#6C0036] py-4">
+    <div className="bg-gradient-to-r from-[#EEB345] to-[#EBC56C] py-4">
       <div className="container mx-auto flex flex-col sm:flex-row justify-between items-center">
         <Link href="/dashboard">
           {isAuthenticated && (
