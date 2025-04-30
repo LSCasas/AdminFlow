@@ -1,5 +1,6 @@
-const API_URL = "https://adminflow-api.onrender.com";
+const API_URL = "https://admin-flow-api.vercel.app";
 //http://localhost:5500
+//https://adminflow-api.onrender.com
 // REGISTER
 export async function createAdmin(data) {
   const res = await fetch(`${API_URL}/admin`, {
