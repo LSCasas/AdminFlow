@@ -9,6 +9,7 @@ export default function RegisterForm() {
   const {
     register,
     handleSubmit,
+    watch,
     formState: { errors },
   } = useForm();
   const [showPassword, setShowPassword] = useState(false);
@@ -17,10 +18,12 @@ export default function RegisterForm() {
   const onSubmit = async (data) => {
     try {
       const response = await createAdmin({
+        username: data.username,
         email: data.email,
         password: data.password,
       });
-      toast.success("Usuario registrado", {
+
+      toast.success("User registered.", {
         position: window.innerWidth < 640 ? "top-center" : "bottom-left",
         style: {
           fontSize: "20px",
@@ -36,7 +39,7 @@ export default function RegisterForm() {
 
       toast.error(
         error.message ||
-          "Hubo un problema con el registro. Intenta nuevamente.",
+          "There was a problem with the registration. Please try again.",
         {
           position: window.innerWidth < 640 ? "top-center" : "bottom-left",
           style: {
@@ -54,13 +57,41 @@ export default function RegisterForm() {
     setShowPassword(!showPassword);
   };
 
+  const password = watch("password");
+
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 w-[90vh]">
       <Toaster />
       <h2 className="mb-4 text-center text-2xl font-bold text-[#B0005E]">
-        Registro
+        Register
       </h2>
-      <form id="registerForm" onSubmit={handleSubmit(onSubmit)} method="POST">
+      <form onSubmit={handleSubmit(onSubmit)} method="POST">
+        <div className="mb-4">
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-[#6C0036]"
+          >
+            Username
+          </label>
+          <input
+            id="username"
+            name="username"
+            type="text"
+            className={clsx(
+              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              { "border-red-500": errors.username }
+            )}
+            {...register("username", {
+              required: "The username is required.",
+            })}
+          />
+          {errors.username && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.username.message}
+            </p>
+          )}
+        </div>
+
         <div className="mb-4">
           <label
             htmlFor="email"
@@ -76,13 +107,14 @@ export default function RegisterForm() {
               "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
               { "border-red-500": errors.email }
             )}
-            {...register("email", { required: "Email is required" })}
+            {...register("email", { required: "The email is required." })}
           />
           {errors.email && (
             <p className="text-red-500 text-sm mt-1">{errors.email.message}</p>
           )}
         </div>
-        <div className="mb-6">
+
+        <div className="mb-4">
           <label
             htmlFor="password"
             className="block text-sm font-medium text-[#6C0036]"
@@ -97,26 +129,67 @@ export default function RegisterForm() {
               "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
               { "border-red-500": errors.password }
             )}
-            {...register("password", { required: "Password is required" })}
+            {...register("password", {
+              required: "The password is required.",
+              minLength: {
+                value: 8,
+                message: "It must be at least 8 characters long.",
+              },
+              pattern: {
+                value:
+                  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&\-_.])[A-Za-z\d@$!%*?&\-_.]{8,}$/,
+                message:
+                  "Must contain at least one uppercase letter, one lowercase letter, one number, and one special character.",
+              },
+            })}
           />
           {errors.password && (
             <p className="text-red-500 text-sm mt-1">
               {errors.password.message}
             </p>
           )}
+        </div>
+
+        <div className="mb-4">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-[#6C0036]"
+          >
+            Confirm password
+          </label>
+          <input
+            type={showPassword ? "text" : "password"}
+            id="confirmPassword"
+            name="confirmPassword"
+            className={clsx(
+              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              { "border-red-500": errors.confirmPassword }
+            )}
+            {...register("confirmPassword", {
+              required: "Confirma tu contraseña",
+              validate: (value) =>
+                value === password || "The passwords do not match.",
+            })}
+          />
+          {errors.confirmPassword && (
+            <p className="text-red-500 text-sm mt-1">
+              {errors.confirmPassword.message}
+            </p>
+          )}
           <span
             onClick={handleShowHidePassword}
             className="text-xs text-[#B0005E] cursor-pointer hover:text-[#6C0036]"
           >
-            {showPassword ? "😳 Hide " : "😎 Show"} Password
+            {showPassword ? "😳 Hide" : "😎 Show"} password
           </span>
         </div>
+
         <div className="text-center">
           <button
             type="submit"
             className="w-full py-2 px-4 bg-[#B0005E] text-white rounded-md hover:bg-[#6C0036]"
           >
-            Registrar
+            Register
           </button>
         </div>
       </form>
