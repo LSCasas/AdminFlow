@@ -62,14 +62,14 @@ export default function RegisterForm() {
   return (
     <div className="bg-white rounded-lg shadow-lg p-8 w-[90vh]">
       <Toaster />
-      <h2 className="mb-4 text-center text-2xl font-bold text-[#B0005E]">
+      <h2 className="mb-4 text-center text-2xl font-bold text-[#1C2039]">
         Register
       </h2>
       <form onSubmit={handleSubmit(onSubmit)} method="POST">
         <div className="mb-4">
           <label
             htmlFor="username"
-            className="block text-sm font-medium text-[#6C0036]"
+            className="block text-sm font-medium text-[#1C2039]"
           >
             Username
           </label>
@@ -78,7 +78,7 @@ export default function RegisterForm() {
             name="username"
             type="text"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block== w-full rounded-md border-2  border-[#e0e0e0] shadow-sm",
               { "border-red-500": errors.username }
             )}
             {...register("username", {
@@ -95,7 +95,7 @@ export default function RegisterForm() {
         <div className="mb-4">
           <label
             htmlFor="email"
-            className="block text-sm font-medium text-[#6C0036]"
+            className="block text-sm font-medium text-[#1C2039]"
           >
             Email
           </label>
@@ -104,7 +104,7 @@ export default function RegisterForm() {
             id="email"
             name="email"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md border-2 border-[#e0e0e0] shadow-sm",
               { "border-red-500": errors.email }
             )}
             {...register("email", { required: "The email is required." })}
@@ -117,7 +117,7 @@ export default function RegisterForm() {
         <div className="mb-4">
           <label
             htmlFor="password"
-            className="block text-sm font-medium text-[#6C0036]"
+            className="block text-sm font-medium text-[#1C2039]"
           >
             Password
           </label>
@@ -126,7 +126,7 @@ export default function RegisterForm() {
             id="password"
             name="password"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md border-2 border-[#e0e0e0] shadow-sm",
               { "border-red-500": errors.password }
             )}
             {...register("password", {
@@ -153,7 +153,7 @@ export default function RegisterForm() {
         <div className="mb-4">
           <label
             htmlFor="confirmPassword"
-            className="block text-sm font-medium text-[#6C0036]"
+            className="block text-sm font-medium text-[#1C2039]"
           >
             Confirm password
           </label>
@@ -162,7 +162,7 @@ export default function RegisterForm() {
             id="confirmPassword"
             name="confirmPassword"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md border-2 border-[#e0e0e0] shadow-sm",
               { "border-red-500": errors.confirmPassword }
             )}
             {...register("confirmPassword", {
@@ -178,7 +178,7 @@ export default function RegisterForm() {
           )}
           <span
             onClick={handleShowHidePassword}
-            className="text-xs text-[#B0005E] cursor-pointer hover:text-[#6C0036]"
+            className="text-xs text-[#1C2039] cursor-pointer hover:text-[#EEB345]"
           >
             {showPassword ? "😳 Hide" : "😎 Show"} password
           </span>
@@ -187,7 +187,7 @@ export default function RegisterForm() {
         <div className="text-center">
           <button
             type="submit"
-            className="w-full py-2 px-4 bg-[#B0005E] text-white rounded-md hover:bg-[#6C0036]"
+            className="w-full py-2 px-4 bg-[#EEB345] text-white rounded-md hover:bg-[#936F2B]"
           >
             Register
           </button>

@@ -72,7 +72,7 @@ export default function LoginForm() {
             id="email"
             name="email"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#1C2039] shadow-sm",
+              "text-black mt-1 block w-full rounded-md border-2 border-[#e0e0e0] shadow-sm",
               { "border-red-500": errors.email }
             )}
             {...register("email", { required: "Email is required" })}
@@ -93,7 +93,7 @@ export default function LoginForm() {
             id="password"
             name="password"
             className={clsx(
-              "text-black mt-1 block w-full rounded-md border-[#B0005E] shadow-sm",
+              "text-black mt-1 block w-full rounded-md border-2 border-[#e0e0e0]shadow-sm",
               { "border-red-500": errors.password }
             )}
             {...register("password", { required: "Password is required" })}
